@@ -36,18 +36,12 @@ namespace TitaniumAS.Opc.Client.Da
     ///     Initializes a new instance of the <see cref="OpcDaServer" /> class.
     /// </summary>
     /// <param name="uri">The server URI.</param>
-    public OpcDaServer(Uri uri, RpcImpLevel? impLevel = null, RpcAuthnLevel? authnLevel = null)
+    public OpcDaServer(Uri uri, ComProxyBlanket comProxyBlanket = null)
     {
       UrlValidator.CheckOpcUrl(uri);
 
       Uri = uri;
-      ComProxyBlanket = ComProxyBlanket.Default;
-
-      if (impLevel.HasValue)
-        ComProxyBlanket.RpcImpLevel = impLevel.Value;
-
-      if (authnLevel.HasValue)
-        ComProxyBlanket.RpcAuthnLevel = authnLevel.Value;
+      ComProxyBlanket = comProxyBlanket ?? ComProxyBlanket.Default;
 
       var shutdown = new OpcShutdown();
       shutdown.Shutdown += OnShutdown;
@@ -62,8 +56,8 @@ namespace TitaniumAS.Opc.Client.Da
     /// </summary>
     /// <param name="progIdOrClsid">The OPC server programmatic identifier or class identifier.</param>
     /// <param name="host">The OPC server host.</param>
-    public OpcDaServer(string progIdOrClsid, string host = null, RpcImpLevel? impLevel = null, RpcAuthnLevel? authnLevel = null)
-        : this(UrlBuilder.Build(progIdOrClsid, host), impLevel, authnLevel)
+    public OpcDaServer(string progIdOrClsid, string host = null, ComProxyBlanket comProxyBlanket = null)
+        : this(UrlBuilder.Build(progIdOrClsid, host), comProxyBlanket)
     {
     }
 
@@ -72,8 +66,8 @@ namespace TitaniumAS.Opc.Client.Da
     /// </summary>
     /// <param name="clsid">The OPC server class identifier.</param>
     /// <param name="host">The OPC server host.</param>
-    public OpcDaServer(Guid clsid, string host = null, RpcImpLevel? impLevel = null, RpcAuthnLevel? authnLevel = null)
-        : this(UrlBuilder.Build(clsid, host), impLevel, authnLevel)
+    public OpcDaServer(Guid clsid, string host = null, ComProxyBlanket comProxyBlanket = null)
+        : this(UrlBuilder.Build(clsid, host), comProxyBlanket)
     {
     }
 
